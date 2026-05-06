@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BlueLeaf Apps — Mobile App Studio</title>
+<meta name="description" content="BlueLeaf Apps is an independent mobile app studio. We design simple, fast, privacy-friendly Android tools — including QR Scanner: Scan, Create, Edit." />
+<meta name="author" content="BlueLeaf Apps" />
+<meta name="keywords" content="BlueLeaf Apps, QR Scanner, Android Apps, Mobile Apps, Barcode Scanner, QR Code Generator" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="BlueLeaf Apps — Mobile App Studio" />
+<meta property="og:description" content="Simple, fast, privacy-friendly Android tools by BlueLeaf Apps." />
+<meta property="og:url" content="https://blueleafapps.github.io/" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #f4f8fb;
+    --bg-2: #e6f0f7;
+    --ink: #0b2434;
+    --ink-soft: #4a6377;
+    --leaf: #1f7a8c;
+    --leaf-deep: #0f4c5c;
+    --accent: #5fb6c9;
+    --card: #ffffff;
+    --line: #d8e3ec;
+    --shadow: 0 10px 30px -12px rgba(15, 76, 92, 0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Decorative background blobs */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(95, 182, 201, 0.18), transparent 60%);
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -300px;
+    left: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(31, 122, 140, 0.12), transparent 60%);
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    background: rgba(244, 248, 251, 0.85);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 1.35rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .brand-mark {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--leaf), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow);
+  }
+  .brand-mark svg { width: 22px; height: 22px; color: #fff; }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+  }
+  nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--leaf-deep); }
+  @media (max-width: 640px) {
+    nav ul { display: none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 90px 0 60px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--leaf);
+    font-weight: 600;
+    margin-bottom: 24px;
+    padding: 6px 14px;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    background: rgba(95, 182, 201, 0.08);
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 22px;
+    color: var(--ink);
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--leaf);
+    font-weight: 400;
+  }
+  .lead {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 auto 36px;
+  }
+  .cta-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border-radius: 100px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.98rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(11, 36, 52, 0.4);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink);
+  }
+
+  /* ---------- APPS SECTION ---------- */
+  section {
+    padding: 80px 0;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .section-subtitle {
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+    font-size: 1.05rem;
+  }
+
+  .app-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 32px;
+    align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .app-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -16px rgba(15, 76, 92, 0.25);
+  }
+  .app-icon {
+    width: 96px; height: 96px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #c8e8f0, #e0f4f8);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: inset 0 0 0 1px rgba(31, 122, 140, 0.1);
+    flex-shrink: 0;
+  }
+  .app-icon svg { width: 56px; height: 56px; color: var(--leaf-deep); }
+
+  .app-info h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.55rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .app-info p {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    margin-bottom: 14px;
+  }
+  .app-tags {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 0.78rem;
+    padding: 4px 11px;
+    background: var(--bg-2);
+    color: var(--leaf-deep);
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .app-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .app-meta .platform {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--leaf-deep);
+    font-size: 1.05rem;
+  }
+  .app-meta .status {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 720px) {
+    .app-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 28px;
+    }
+    .app-icon { margin: 0 auto; }
+    .app-tags { justify-content: center; }
+    .app-meta { align-items: center; text-align: center; }
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about {
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.6));
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .about-grid h2 { margin-bottom: 20px; }
+  .about-grid p {
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    margin-bottom: 16px;
+  }
+  .values {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .value {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .value-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--bg-2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .value-icon svg { width: 20px; height: 20px; color: var(--leaf-deep); }
+  .value h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .value p { font-size: 0.94rem; margin: 0; }
+
+  @media (max-width: 720px) {
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact-card {
+    background: var(--ink);
+    color: #e8f0f5;
+    border-radius: 28px;
+    padding: 56px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(95, 182, 201, 0.25), transparent 60%);
+    border-radius: 50%;
+  }
+  .contact-card h2 {
+    color: #fff;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .contact-card p {
+    color: #b0c4d4;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .contact-links {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+    position: relative;
+  }
+  .contact-links a {
+    color: #fff;
+    text-decoration: none;
+    padding: 11px 22px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .contact-links a:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    padding: 40px 0 60px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+  }
+  footer .small {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  /* fade-in on load */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * { animation: fadeUp 0.8s ease-out backwards; }
+  .hero .eyebrow { animation-delay: 0.05s; }
+  .hero h1       { animation-delay: 0.15s; }
+  .hero .lead    { animation-delay: 0.25s; }
+  .hero .cta-row { animation-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6"/>
+        </svg>
+      </span>
+      BlueLeaf Apps
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#apps">Apps</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">Independent App Studio</span>
+      <h1>Small tools,<br><em>made carefully.</em></h1>
+      <p class="lead">
+        BlueLeaf Apps designs simple, fast, privacy-friendly Android utilities.
+        No accounts, no tracking, no clutter — just tools that do one thing well.
+      </p>
+      <div class="cta-row">
+        <a href="#apps" class="btn btn-primary">
+          Browse our apps
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPS -->
+  <section id="apps">
+    <div class="container">
+      <h2 class="section-title">Our Apps</h2>
+      <p class="section-subtitle">Mobile applications published by BlueLeaf Apps.</p>
+
+      <!-- App: QR Scanner -->
+      <article class="app-card">
+        <div class="app-icon">
+          <img src="icon/logo_af002.webp" alt="QR Scanner App Icon" style="width: 96px; height: 96px; border-radius: 12px;">
+        </div>
+        <div class="app-info">
+          <h3>QR Scanner: Scan, Create, Edit</h3>
+          <p>A lightning-fast, fully offline QR code scanner and generator. Read barcodes, design custom QR codes, and share instantly — all without sending your data anywhere.</p>
+          <div class="app-tags">
+            <span class="tag">Offline</span>
+            <span class="tag">Free</span>
+            <span class="tag">Android</span>
+            <span class="tag">No tracking</span>
+          </div>
+        </div>
+        <div class="app-meta">
+          <span class="platform">Android</span>
+          <span class="status">Available on Google Play</span>
+        </div>
+      </article>
+
+      <!-- 
+        ▼▼▼ TO ADD A NEW APP: copy the <article class="app-card">...</article> 
+        block above, paste it below, and update the title, description, 
+        and (optionally) the SVG icon. 
+      ▼▼▼ -->
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="container about-grid">
+      <div>
+        <h2 class="section-title">About BlueLeaf</h2>
+        <p>
+          BlueLeaf Apps is a small, independent mobile app studio. We build
+          everyday Android tools that respect your time and your data.
+        </p>
+        <p>
+          Every app is engineered to feel quick, look clean, and work fully
+          offline whenever possible. We believe utilities should disappear
+          into your workflow — not demand attention.
+        </p>
+      </div>
+      <div class="values">
+        <div class="value">
+          <span class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+          </span>
+          <div>
+            <h4>Privacy first</h4>
+            <p>Apps work offline by default. We don't collect personal data.</p>
+          </div>
+        </div>
+        <div class="value">
+          <span class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+          </span>
+          <div>
+            <h4>Fast and lightweight</h4>
+            <p>Small install size, instant launch, no bloat.</p>
+          </div>
+        </div>
+        <div class="value">
+          <span class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          </span>
+          <div>
+            <h4>Made with care</h4>
+            <p>Independently built and maintained — every detail reviewed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-card">
+        <h2 class="section-title">Get in touch</h2>
+        <p>Questions, feedback, or bug reports — we'd love to hear from you.</p>
+        <div class="contact-links">
+          <a href="mailto:dong2k2.dev@gmail.com">
+            ✉ dong2k2.dev@gmail.com
+          </a>
+          <a href="privacy.html">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div>© <span id="year"></span> BlueLeaf Apps. All rights reserved.</div>
+    <div class="small">Built with care · Hanoi, Vietnam</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
